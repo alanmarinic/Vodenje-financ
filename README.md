@@ -1,2 +1,2 @@
-# Vodenje-financ
+# Vodenje financ
 Projektna naloga pri UVP
