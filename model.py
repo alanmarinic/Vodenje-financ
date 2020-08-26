@@ -44,7 +44,7 @@ class Finance:
     def dodaj_strosek(self, strosek, kategorija, cena, datum, kolicina=1):
         if type(kolicina) != int:
             raise TypeError('Količina mora biti celo število!')
-        skupna_cena = kolicina * cena
+        skupna_cena = round(kolicina * cena, 2)
         self.stroski[(strosek, kategorija)] = [skupna_cena, datum]
         self.stanje -= skupna_cena
         self._stroski_graf(datum, skupna_cena)
@@ -70,15 +70,19 @@ class Finance:
         return kategorije
 
     def nov_priliv(self, priliv, datum, opis):
-        try:
-            int(priliv)
-        except:
-            raise TypeError('Vnesli ste napačen tip!')
+        self._preveri_tip(priliv)
+        priliv = round(priliv, 2)
         if priliv < 0:
             raise ValueError('Vnesi pozitivno število!')
         self.prilivi[(priliv, datum)] = opis
         self.stanje += priliv
         self._stanje_graf(datum, priliv)
+
+    def _preveri_tip(self, cifra):
+        try:
+            int(cifra)
+        except:
+            raise TypeError('Količina mora biti številka?')
 
     def _stanje_graf(self, datum, priliv):
         if datum in self.stanje_graf:
@@ -105,10 +109,8 @@ class Finance:
             pass
 
     def posodi(self, komu, datum, koliko):
-        try:
-            int(koliko)
-        except:
-            raise TypeError('Količina mora biti številka?')
+        self._preveri_tip(koliko)
+        koliko = round(koliko, 2)
         if self.stanje < koliko:
             raise ValueError('Premalo denarja za posojo!')
         else:
@@ -121,17 +123,18 @@ class Finance:
     #v botlu - ce ti posods
 
     def vrnjeno_meni(self, odkoga, koliko, datum):
-        if odkoga not in self.posojeno_drugim:
-            raise ValueError('Tej osebi nisi posodil denarja')
-        else:
-            self.posojeno_drugim[odkoga][1] -= koliko
-            self.stanje += koliko
-            self.stanje_graf[datum] = self.stanje
-            if self.posojeno_drugim[odkoga][1] == 0:
-                del self.posojeno_drugim[odkoga]
-                #z mihcem sta poravnala stroske juhej!
+        self._preveri_tip(koliko)
+        koliko = round(koliko, 2)
+        self.posojeno_drugim[odkoga][1] -= koliko
+        self.stanje += koliko
+        self.stanje_graf[datum] = self.stanje
+        if self.posojeno_drugim[odkoga][1] == 0:
+            del self.posojeno_drugim[odkoga]
+            #z mihcem sta poravnala stroske juhej!
 
     def dolg(self, komu, datum, koliko):
+        self._preveri_tip(koliko)
+        koliko = round(koliko, 2)
         if komu in self.posojeno_meni:
             self.posojeno_meni[komu][1] += koliko
         else:
@@ -141,15 +144,14 @@ class Finance:
     #v botlu - ce ti posods
 
     def poravnaj_dolg(self, odkoga, koliko, datum):
-        if odkoga not in self.posojeno_meni:
-            raise ValueError(f'{odkoga} ti ni posodil denarja')
-        else:
-            self.posojeno_meni[odkoga][1] -= koliko
-            self.stanje -= koliko
-            self.stanje_graf[datum] = self.stanje
-            if self.posojeno_meni[odkoga][1] == 0:
-                del self.posojeno_meni[odkoga]
-                #z mihcem sta poravnala stroske juhej!
+        self._preveri_tip(koliko)
+        koliko = round(koliko, 2)
+        self.posojeno_meni[odkoga][1] -= koliko
+        self.stanje -= koliko
+        self.stanje_graf[datum] = self.stanje
+        if self.posojeno_meni[odkoga][1] == 0:
+            del self.posojeno_meni[odkoga]
+            #z mihcem sta poravnala stroske juhej!
 
     def slovar_s_stanjem(self):
         return {

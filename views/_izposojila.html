@@ -1,0 +1,9 @@
+<label for="{{id}}">{{oznaka}}:</label>
+
+<select name="{{id}}" id="{{id}}">
+    % for odkoga in finance.posojeno_meni.keys():
+    <option value="{{odkoga}}">
+        {{odkoga}}
+    </option>
+    % end
+</select>

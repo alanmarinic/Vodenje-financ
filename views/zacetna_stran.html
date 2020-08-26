@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Finance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <h1><pre>FINANCE</pre>
+
+    
+    <h1>Stroški</h1>
+        <table class="table">
+            % for strosek, atributi in finance.stroski.items():
+            <tr>
+                <td>{{strosek[0]}}</td>
+                <td>{{strosek[1]}}</td>
+                <td>{{atributi[0]}}</td>
+                <td>{{atributi[1]}}</td>
+            </tr>
+            % end
+        </table>
+    
+        <br>
+
+    <h1>Dodaj strošek</h1>
+    <form action="/dodaj_strosek/" method="POST">
+        <table class="table">
+            <tr><td>Strošek:</td><td><input type="text" name="strosek"></td></tr>
+            <tr><td>Kategorija:</td><td><input type="text" name="kategorija"></td></tr>
+            <tr><td>Cena:</td><td><input type="text" name="cena"></td></tr>
+            <tr><td>Količina:</td><td><input type="text" name="kolicina"></td></tr>
+            <tr><td>Datum:</td><td><input type="text" name="datum"></td></tr>
+            <tr><td></td><td><input type="submit" value="Dodaj strošek"></td></tr>
+        </table>
+    </form>
+
+    <br>
+    <h1>Dohodki</h1>
+    <table class="table">
+        % for priliv, opis in finance.prilivi.items():
+        <tr>
+            <td>{{priliv[0]}}</td>
+            <td>{{priliv[1]}}</td>
+            <td>{{opis}}</td>
+        </tr>
+        % end
+    </table>
+    <br>
+    <h1>Dodaj dohodek</h1>
+        <form action="/dodaj_dohodek/" method="POST">
+            <table class="table">
+                <tr><td>Dohodek:</td><td><input type="text" name="dohodek"></td></tr>
+                <tr><td>Datum:</td><td><input type="text" name="datum"></td></tr>
+                <tr><td>Opis:</td><td><input type="text" name="opis"></td></tr>
+                <tr><td></td><td><input type="submit" value="Dodaj dohodek"></td></tr>
+            </table>
+        </form>
+
+    <br>
+    <h1>Posojila</h1>
+    <h2>Posojeno</h2>
+    <table class="table">
+        % for komu, ostalo in finance.posojeno_drugim.items():
+        <tr>
+            <td>{{komu}}</td>
+            <td>{{ostalo[0]}}</td>
+            <td>{{ostalo[1]}}</td>
+        </tr>
+        % end
+    </table>
+    <br>
+    <h2>Izposojeno</h2>
+    <table class="table">
+        % for odkoga, ostalo in finance.posojeno_meni.items():
+        <tr>
+            <td>{{odkoga}}</td>
+            <td>{{ostalo[0]}}</td>
+            <td>{{ostalo[1]}}</td> 
+        </tr> 
+        % end
+    </table>
+
+    <h2>Posodi</h2>
+        <form action="/posodi_denar/" method="POST">
+            <table class="table">
+                <tr><td>Oseba:</td><td><input type="text" name="komu"></td></tr>
+                <tr><td>Datum:</td><td><input type="text" name="datum"></td></tr>
+                <tr><td>Koliko:</td><td><input type="text" name="koliko"></td></tr>
+                <tr><td></td><td><input type="submit" value="Posodi denar"></td></tr>
+            </table>
+        </form>
+
+    <h2>Izposodi</h2>
+        <form action="/izposodi_denar/" method="POST">
+            <table class="table">
+                <tr><td>Oseba:</td><td><input type="text" name="odkoga"></td></tr>
+                <tr><td>Datum:</td><td><input type="text" name="datum"></td></tr>
+                <tr><td>Koliko:</td><td><input type="text" name="koliko"></td></tr>
+                <tr><td></td><td><input type="submit" value="Izposodi si denar"></td></tr>
+            </table>
+        </form>
+
+    <h2>Vračila meni</h2>
+        <form action="/vrnjeno_meni/" method="POST">
+            <table class="table">
+                <td>
+                    % include('_posojila.html', id='odkoga', oznaka='Oseba')
+                </td>
+                <tr><td>Datum:</td><td><input type="text" name="datum"></td></tr>
+                <tr><td>Koliko:</td><td><input type="text" name="koliko"></td></tr>
+                <tr><td></td><td><input type="submit" value="Dodaj na račun"></td></tr>
+            </table>
+        </form>
+
+    <h2>Vračilo ostalim</h2>
+        <form action="/vrnjeno_ostalim/" method="POST">
+            <table class="table">
+                <td>
+                    % include('_izposojila.html', id='odkoga', oznaka='Oseba')
+                </td>
+                <tr><td>Datum:</td><td><input type="text" name="datum"></td></tr>
+                <tr><td>Koliko:</td><td><input type="text" name="koliko"></td></tr>
+                <tr><td></td><td><input type="submit" value="Vrni prijatelju"></td></tr>
+            </table>
+        </form>
+
+
+</body>
+</html> 
