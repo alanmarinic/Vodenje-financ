@@ -1,0 +1,31 @@
+{
+    "stroski": [
+        {
+            "strosek": "majca",
+            "kategorija": "obleke",
+            "skupna cena": 20,
+            "datum": "03.06.2020"
+        }
+    ],
+    "prilivi": [
+        {
+            "priliv": 100.0,
+            "datum": "30.5.2020",
+            "opis": "placa"
+        }
+    ],
+    "posojeno drugim": [
+        {
+            "komu": "sarra",
+            "datum": "8.8.2020",
+            "koliko": 20
+        }
+    ],
+    "posojeno meni": [
+        {
+            "komu": "sarklo",
+            "datum": "11.10.2020",
+            "koliko": 5
+        }
+    ]
+}
