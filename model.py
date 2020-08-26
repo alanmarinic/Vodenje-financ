@@ -34,7 +34,6 @@ class Uporabnik:
 class Finance:
     def __init__(self):
         self.stanje = 0
-        self.kategorije = []
         self.stroski = {}
         self.stanje_graf = {}
         self.prilivi = {}
@@ -42,21 +41,14 @@ class Finance:
         self.posojeno_drugim = {}
         self.posojeno_meni = {}
 
-    def dodaj_kategorijo(self, naziv):
-        if naziv in self.kategorije:
-            raise ValueError(f'Kategorija {naziv} že obstaja!')
-        else:
-            self.kategorije.append(naziv)
-
     def dodaj_strosek(self, strosek, kategorija, cena, datum, kolicina=1):
         if type(kolicina) != int:
             raise TypeError('Količina mora biti celo število!')
-        if kategorija not in self.kategorije:
-            self.kategorije.append(kategorija)
         skupna_cena = kolicina * cena
         self.stroski[(strosek, kategorija)] = [skupna_cena, datum]
         self.stanje -= skupna_cena
         self._stroski_graf(datum, skupna_cena)
+        self._stanje_graf(datum, self.stanje)
 
     def _stroski_graf(self, datum, vrednost):
         if datum in self.stroski_graf:
@@ -64,9 +56,24 @@ class Finance:
         else:
             self.stroski_graf[datum] = vrednost
 
+    def stroski_po_kategorijah(self):               
+        kategorije = {}
+        for k,v in self.stroski.items():
+            strosek = k[0]
+            kategorija = k[1]
+            skupna_cena = v[0]
+            datum = v[1]
+            if kategorija in kategorije:
+                kategorije[kategorija].append([strosek, skupna_cena, datum])
+            else:
+                kategorije[kategorija] = [[strosek, skupna_cena, datum]]
+        return kategorije
+
     def nov_priliv(self, priliv, datum, opis):
-        if type(priliv) != float or int:
-            raise TypeError('Vrednost mora biti število!')
+        try:
+            int(priliv)
+        except:
+            raise TypeError('Vnesli ste napačen tip!')
         if priliv < 0:
             raise ValueError('Vnesi pozitivno število!')
         self.prilivi[(priliv, datum)] = opis
@@ -79,16 +86,17 @@ class Finance:
         else:
             self.stanje_graf[datum] = priliv
 
-    def odstrani_strosek(self, strosek, kategorija):
-        if (strosek, kategorija) not in self.stroski:
-            raise ValueError(f'Strošek {strosek} ne obstaja!')
-        else:
-            skupna_cena = self.stroski[(strosek, kategorija)][0]
-            self.stanje += skupna_cena
-            del self.stroski[(strosek, kategorija)]
+ #   def odstrani_strosek(self, strosek, kategorija, datum):
+ #       if (strosek, kategorija) not in self.stroski:
+ #           raise ValueError(f'Strošek {strosek} ne obstaja!')
+ #       else:
+ #           skupna_cena = self.stroski[(strosek, kategorija)][0]
+ #           self.stanje += skupna_cena
+ #           self._stanje_graf()
+ #           del self.stroski[(strosek, kategorija)]
 
 #   def limit_porabe(self, limit):
-#      omeji stroske ki jih lahko porabis na mesec
+#       datetime
 
     def spodnja_meja_stanja(self, spodnja_meja=0):
         if self.stanje <= spodnja_meja:
@@ -96,75 +104,81 @@ class Finance:
         else:
             pass
 
-    def posodi(self, komu, koliko):
-        if komu in self.posojeno_drugim:
-            self.posojeno_drugim[komu] += koliko
-        self.posojeno_drugim[komu] = koliko
-        self.stanje -= koliko
+    def posodi(self, komu, datum, koliko):
+        try:
+            int(koliko)
+        except:
+            raise TypeError('Količina mora biti številka?')
+        if self.stanje < koliko:
+            raise ValueError('Premalo denarja za posojo!')
+        else:
+            if komu in self.posojeno_drugim:
+                self.posojeno_drugim[komu][1] += koliko
+            else:
+                self.posojeno_drugim[komu] = [datum, koliko]
+            self.stanje -= koliko
+            self._stanje_graf(datum, self.stanje)
     #v botlu - ce ti posods
 
-    def vrnjeno_meni(self, odkoga, koliko):
+    def vrnjeno_meni(self, odkoga, koliko, datum):
         if odkoga not in self.posojeno_drugim:
             raise ValueError('Tej osebi nisi posodil denarja')
         else:
-            self.posojeno_drugim[odkoga] -= koliko
+            self.posojeno_drugim[odkoga][1] -= koliko
             self.stanje += koliko
-            if self.posojeno_drugim[odkoga] = 0:
+            self.stanje_graf[datum] = self.stanje
+            if self.posojeno_drugim[odkoga][1] == 0:
                 del self.posojeno_drugim[odkoga]
                 #z mihcem sta poravnala stroske juhej!
 
-    def dolg(self, komu, koliko):
+    def dolg(self, komu, datum, koliko):
         if komu in self.posojeno_meni:
-            self.posojeno_meni[komu] += koliko
-        self.posojeno_meni[komu] = koliko
+            self.posojeno_meni[komu][1] += koliko
+        else:
+            self.posojeno_meni[komu] = [datum, koliko]
         self.stanje += koliko
+        self._stanje_graf(datum, self.stanje)
     #v botlu - ce ti posods
 
-    def poravnaj_dolg(self, odkoga, koliko):
+    def poravnaj_dolg(self, odkoga, koliko, datum):
         if odkoga not in self.posojeno_meni:
             raise ValueError(f'{odkoga} ti ni posodil denarja')
         else:
-            self.posojeno_meni[odkoga] -= koliko
+            self.posojeno_meni[odkoga][1] -= koliko
             self.stanje -= koliko
-            if self.posojeno_meni[odkoga] = 0:
+            self.stanje_graf[datum] = self.stanje
+            if self.posojeno_meni[odkoga][1] == 0:
                 del self.posojeno_meni[odkoga]
                 #z mihcem sta poravnala stroske juhej!
 
-#funkcije za shranjevanje in nalaganje obstojecih datotek
     def slovar_s_stanjem(self):
         return {
-    #        'stanje' : [{
-   #             'stanje' : 
-  #          }]
-            'kategorije' : [{
-                'naziv' : kategorija.naziv,
-            } for kategorija in self.kategorije],
-            'stroski' : [{
-                'strosek' : k[0],
-                'kategorija' : k[1],
-                'skupna cena' : v[0],
-                'datum' : str(v[1]),
+            'stroski': [{
+                'strosek': k[0],
+                'kategorija': k[1],
+                'skupna cena': v[0],
+                'datum': str(v[1]),
             } for k, v in self.stroski.items()],
-            'prilivi' : [{
-                'priliv' : k[0],
-                'datum' : str(k[1]),
-                'opis' : v,
+            'prilivi': [{
+                'priliv': k[0],
+                'datum': str(k[1]),
+                'opis': v,
             } for k, v in self.prilivi.items()],
-            'posojeno drugim' : [{
-                'komu' : k,
-                'koliko' : v,
+            'posojeno drugim': [{
+                'komu': k,
+                'datum': v[0],
+                'koliko': v[1],
             } for k, v in self.posojeno_drugim.items()],
-            'posojeno meni' : [{
-                'komu' : k,
-                'koliko' : v,
+            'posojeno meni': [{
+                'komu': k,
+                'datum': v[0],
+                'koliko': v[1],
             } for k, v in self.posojeno_meni.items()],
-        }
+        }#se stanje ce ga nebo avto
 
     @classmethod
     def nalozi_iz_slovarja(cls, slovar_s_stanjem):
         osebne_finance = cls()
-        for kategorija in slovar_s_stanjem['kategorije']:
-            nova_kategorija = osebne_finance.dodaj_kategorijo(kategorija['naziv'])
         for strosek in slovar_s_stanjem['stroski']:
             osebne_finance.dodaj_strosek(
                 strosek['strosek'],
@@ -181,11 +195,13 @@ class Finance:
         for posojilo in slovar_s_stanjem['posojeno drugim']:
             osebne_finance.posodi(
                 posojilo['komu'],
+                posojilo['datum'],
                 posojilo['koliko']
             )
         for dolgovi in slovar_s_stanjem['posojeno meni']:
             osebne_finance.dolg(
                 dolgovi['komu'],
+                dolgovi['datum'],
                 dolgovi['koliko']
             )
         return osebne_finance 
