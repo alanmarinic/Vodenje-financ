@@ -13,8 +13,8 @@ def zacetna_stran():
 
 @bottle.post('/dodaj_strosek/')
 def dodaj_strosek():
-    strosek = bottle.request.forms["strosek"]
-    kategorija = bottle.request.forms["kategorija"]
+    strosek = bottle.request.forms.getunicode("strosek")
+    kategorija = bottle.request.forms.getunicode("kategorija")
     cena = float(bottle.request.forms["cena"])
     kolicina = int(bottle.request.forms["kolicina"])
     datum = bottle.request.forms["datum"]
@@ -25,13 +25,13 @@ def dodaj_strosek():
 def dodaj_dohodek():
     dohodek = float(bottle.request.forms["dohodek"])
     datum = bottle.request.forms["datum"]
-    opis = bottle.request.forms["opis"]
+    opis = bottle.request.forms.getunicode("opis")
     finance.nov_priliv(dohodek, datum, opis)
     bottle.redirect('/')
 
 @bottle.post('/posodi_denar/')
 def posodi():
-    komu = bottle.request.forms["komu"]
+    komu = bottle.request.forms.getunicode("komu")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.posodi(komu, datum, koliko)
@@ -39,7 +39,7 @@ def posodi():
 
 @bottle.post('/izposodi_denar/')
 def izposodi():
-    odkoga = bottle.request.forms["odkoga"]
+    odkoga = bottle.request.forms.getunicode("odkoga")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.dolg(odkoga, datum, koliko)
@@ -47,7 +47,7 @@ def izposodi():
 
 @bottle.post('/vrnjeno_meni/')
 def vrnjeno_meni():
-    odkoga = bottle.request.forms["odkoga"]
+    odkoga = bottle.request.forms.getunicode("odkoga")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.vrnjeno_meni(odkoga, koliko, datum)
@@ -55,7 +55,7 @@ def vrnjeno_meni():
 
 @bottle.post('/vrnjeno_ostalim/')
 def vrnjeno_ostalim():
-    odkoga = bottle.request.forms["odkoga"]
+    odkoga = bottle.request.forms.getunicode("odkoga")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.poravnaj_dolg(odkoga, koliko, datum)

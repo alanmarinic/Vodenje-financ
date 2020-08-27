@@ -129,7 +129,6 @@ class Finance:
             self.posojeno_meni[komu] = [datum, koliko]
         self.stanje += koliko
         self._stanje_graf(datum, self.stanje)
-    #v botlu - ce ti posods
 
     def poravnaj_dolg(self, odkoga, koliko, datum):
         self._preveri_tip(koliko)
@@ -139,7 +138,6 @@ class Finance:
         self.stanje_graf[datum] = self.stanje
         if self.posojeno_meni[odkoga][1] == 0:
             del self.posojeno_meni[odkoga]
-            #z mihcem sta poravnala stroske juhej!
 
     def izrisi_graf(self):
         x1, y1 = self.stanje_graf.keys(), self.stanje_graf.values()
@@ -150,7 +148,6 @@ class Finance:
         plt.ylabel('Vrednost')
         plt.title('Stanje in poraba')
         plt.legend()
-        return plt.show()
 
     def slovar_s_stanjem(self):
         return {
