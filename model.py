@@ -1,6 +1,6 @@
-import datetime
-#import matplot.libpyplot as plt
+from datetime import date
 import json
+import matplotlib.pyplot as plt
 
 
 class Uporabnik:
@@ -90,18 +90,6 @@ class Finance:
         else:
             self.stanje_graf[datum] = priliv
 
- #   def odstrani_strosek(self, strosek, kategorija, datum):
- #       if (strosek, kategorija) not in self.stroski:
- #           raise ValueError(f'Strošek {strosek} ne obstaja!')
- #       else:
- #           skupna_cena = self.stroski[(strosek, kategorija)][0]
- #           self.stanje += skupna_cena
- #           self._stanje_graf()
- #           del self.stroski[(strosek, kategorija)]
-
-#   def limit_porabe(self, limit):
-#       datetime
-
     def spodnja_meja_stanja(self, spodnja_meja=0):
         if self.stanje <= spodnja_meja:
             raise ValueError('Presegli ste spodnjo mejo!')
@@ -153,6 +141,17 @@ class Finance:
             del self.posojeno_meni[odkoga]
             #z mihcem sta poravnala stroske juhej!
 
+    def izrisi_graf(self):
+        x1, y1 = self.stanje_graf.keys(), self.stanje_graf.values()
+        plt.plot(x1, y1, label = "Stanje")
+        x2, y2 = self.stroski_graf.keys(), self.stroski_graf.values()
+        plt.plot(x2, y2, label = "Poraba")
+        plt.xlabel('Čas')
+        plt.ylabel('Vrednost')
+        plt.title('Stanje in poraba')
+        plt.legend()
+        return plt.show()
+
     def slovar_s_stanjem(self):
         return {
             'stroski': [{
@@ -168,12 +167,12 @@ class Finance:
             } for k, v in self.prilivi.items()],
             'posojeno drugim': [{
                 'komu': k,
-                'datum': v[0],
+                'datum': str(v[0]),
                 'koliko': v[1],
             } for k, v in self.posojeno_drugim.items()],
             'posojeno meni': [{
                 'komu': k,
-                'datum': v[0],
+                'datum': str(v[0]),
                 'koliko': v[1],
             } for k, v in self.posojeno_meni.items()],
         }#se stanje ce ga nebo avto
