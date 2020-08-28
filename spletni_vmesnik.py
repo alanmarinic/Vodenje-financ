@@ -19,6 +19,11 @@ def pregled_spg():
 def posojila():
     return bottle.template('posojila.html', finance=finance)
 
+@bottle.get('/graf/')
+def odpri_graf():
+    finance.izrisi_graf()
+    bottle.redirect('/')
+
 @bottle.get('/pomoc/')
 def pomoc():
     return bottle.template('pomoc.html')
@@ -72,10 +77,5 @@ def vrnjeno_ostalim():
     koliko = float(bottle.request.forms["koliko"])
     finance.poravnaj_dolg(odkoga, koliko, datum)
     bottle.redirect('/posojila/')
-
-@bottle.get('/odpri-graf/')
-def odpri_graf():
-    finance.izrisi_graf()
-    bottle.redirect('/')
 
 bottle.run(debug=True, reloader=True)

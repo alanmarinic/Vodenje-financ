@@ -1,16 +1,19 @@
 % zavihki = [
 %     'stroski',
 %     'posojila',
+%     'graf',
 %     'pomoc'
 % ]
 % oznaka_zavihka = {
-%     'stroski': 'Stroški, prilivi in graf',
+%     'stroski': 'Stroški in dohodki',
 %     'posojila': 'Posojila',
+%     'graf': 'Graf',
 %     'pomoc': 'Pomoč'
 % }
 % ikona_zavihka = {
-%     'stroski': 'fas fa-chart-line',
+%     'stroski': 'fas fa-exchange-alt',
 %     'posojila': 'fas fa-handshake',
+%     'graf': 'fas fa-chart-line',
 %     'pomoc': 'fas fa-info'
 % }
 <!DOCTYPE html>
@@ -34,7 +37,7 @@
             <span class="icon">
               <i class="fas fa-piggy-bank"></i>
             </span>
-            <strong style= "color: rgba(255, 0, 0, 0.568);">Finance</strong>
+            <strong style= "color: rgb(0, 207, 111);">Finance</strong>
           </span>
         </div>
         <div class="navbar-start">
@@ -68,7 +71,7 @@
           <div class="container pt-3">
             <span>
               <form method="POST" action="/odjava/">
-                <input class="button is-danger" style="margin-top: 5pt;" type="submit" value="Odjava">
+                <input class="button is-danger is-light" style="margin-top: 5pt;" type="submit" value="Odjava">
               </form>
             </span>
           </div>
