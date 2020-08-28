@@ -11,6 +11,11 @@ except:
 def zacetna_stran():
     return bottle.template('zacetna_stran.html', finance=finance)
 
+@bottle.get('/odpri-graf/')
+def odpri_graf():
+    finance.izrisi_graf()
+    bottle.redirect('/')
+
 @bottle.post('/dodaj_strosek/')
 def dodaj_strosek():
     strosek = bottle.request.forms.getunicode("strosek")

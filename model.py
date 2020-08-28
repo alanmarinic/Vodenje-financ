@@ -1,8 +1,5 @@
-from datetime import date
-import json
-import matplotlib.pyplot as plt
-
-
+import plotly as py
+import plotly.graph_objs as go
 class Uporabnik:
     def __init__(self, uporabnisko_ime, zasifrirano_geslo, osebne_finance):
         self.uporabnisko_ime = uporabnisko_ime
@@ -140,14 +137,44 @@ class Finance:
             del self.posojeno_meni[odkoga]
 
     def izrisi_graf(self):
-        x1, y1 = self.stanje_graf.keys(), self.stanje_graf.values()
-        plt.plot(x1, y1, label = "Stanje")
-        x2, y2 = self.stroski_graf.keys(), self.stroski_graf.values()
-        plt.plot(x2, y2, label = "Poraba")
-        plt.xlabel('Čas')
-        plt.ylabel('Vrednost')
-        plt.title('Stanje in poraba')
-        plt.legend()
+        sled_stanja = {
+            "x": list(self.stanje_graf.keys()), 
+            "y": list(self.stanje_graf.values()), 
+            "line": {
+              "color": "#385965", 
+              "width": 1.5
+            }, 
+            "mode": "lines", 
+            "name": "Stanje", 
+            "type": "scatter", 
+        }
+        sled_porabe = {
+            "x": list(self.stroski_graf.keys()), 
+            "y": list(self.stroski_graf.values()), 
+            "line": {
+              "color": "#f21b1b", 
+              "width": 1.5
+            }, 
+            "mode": "lines", 
+            "name": "Stroški", 
+            "type": "scatter", 
+        }
+        podatki = [sled_stanja, sled_porabe]
+        layout = {
+            "showlegend": True, 
+            "title": {"text": "Analiza evidence"}, 
+            "xaxis": {
+                "rangeslider": {"visible": False}, 
+                "title": {"text": "Čas"}, 
+                "zeroline": False
+            }, 
+            "yaxis": {
+                "title": {"text": "€"}, 
+                "zeroline": False
+            }
+        }
+        graf = go.Figure(data = podatki, layout = layout)
+        graf.show()
 
     def slovar_s_stanjem(self):
         return {
