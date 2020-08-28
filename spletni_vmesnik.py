@@ -9,14 +9,21 @@ except:
 
 @bottle.get('/')
 def zacetna_stran():
-    return bottle.template('zacetna_stran.html', finance=finance)
+    bottle.redirect('/stroski/')
 
-@bottle.get('/odpri-graf/')
-def odpri_graf():
-    finance.izrisi_graf()
-    bottle.redirect('/')
+@bottle.get('/stroski/')
+def pregled_spg():
+    return bottle.template('stroski.html', finance=finance)
 
-@bottle.post('/dodaj_strosek/')
+@bottle.get('/posojila/')
+def posojila():
+    return bottle.template('posojila.html', finance=finance)
+
+@bottle.get('/pomoc/')
+def pomoc():
+    return bottle.template('pomoc.html')
+
+@bottle.post('/dodaj-strosek/')
 def dodaj_strosek():
     strosek = bottle.request.forms.getunicode("strosek")
     kategorija = bottle.request.forms.getunicode("kategorija")
@@ -26,7 +33,7 @@ def dodaj_strosek():
     finance.dodaj_strosek(strosek, kategorija, cena, datum, kolicina=1)
     bottle.redirect('/')
 
-@bottle.post('/dodaj_dohodek/')
+@bottle.post('/dodaj-dohodek/')
 def dodaj_dohodek():
     dohodek = float(bottle.request.forms["dohodek"])
     datum = bottle.request.forms["datum"]
@@ -34,36 +41,41 @@ def dodaj_dohodek():
     finance.nov_priliv(dohodek, datum, opis)
     bottle.redirect('/')
 
-@bottle.post('/posodi_denar/')
+@bottle.post('/posodi-denar/')
 def posodi():
     komu = bottle.request.forms.getunicode("komu")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.posodi(komu, datum, koliko)
-    bottle.redirect('/')
+    bottle.redirect('/posojila/')
 
-@bottle.post('/izposodi_denar/')
+@bottle.post('/izposodi-denar/')
 def izposodi():
     odkoga = bottle.request.forms.getunicode("odkoga")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.dolg(odkoga, datum, koliko)
-    bottle.redirect('/')
+    bottle.redirect('/posojila/')
 
-@bottle.post('/vrnjeno_meni/')
+@bottle.post('/vrnjeno-meni/')
 def vrnjeno_meni():
     odkoga = bottle.request.forms.getunicode("odkoga")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.vrnjeno_meni(odkoga, koliko, datum)
-    bottle.redirect('/')
+    bottle.redirect('/posojila/')
 
-@bottle.post('/vrnjeno_ostalim/')
+@bottle.post('/vrnjeno-ostalim/')
 def vrnjeno_ostalim():
     odkoga = bottle.request.forms.getunicode("odkoga")
     datum = bottle.request.forms["datum"]
     koliko = float(bottle.request.forms["koliko"])
     finance.poravnaj_dolg(odkoga, koliko, datum)
+    bottle.redirect('/posojila/')
+
+@bottle.get('/odpri-graf/')
+def odpri_graf():
+    finance.izrisi_graf()
     bottle.redirect('/')
 
 bottle.run(debug=True, reloader=True)

@@ -85,7 +85,7 @@ class Finance:
         if datum in self.stanje_graf:
             self.stanje_graf[datum] += priliv
         else:
-            self.stanje_graf[datum] = priliv
+            self.stanje_graf[datum] = self.stanje
 
     def spodnja_meja_stanja(self, spodnja_meja=0):
         if self.stanje <= spodnja_meja:
@@ -105,7 +105,6 @@ class Finance:
                 self.posojeno_drugim[komu] = [datum, koliko]
             self.stanje -= koliko
             self._stanje_graf(datum, self.stanje)
-    #v botlu - ce ti posods
 
     def vrnjeno_meni(self, odkoga, koliko, datum):
         self._preveri_tip(koliko)
@@ -115,7 +114,6 @@ class Finance:
         self.stanje_graf[datum] = self.stanje
         if self.posojeno_drugim[odkoga][1] == 0:
             del self.posojeno_drugim[odkoga]
-            #z mihcem sta poravnala stroske juhej!
 
     def dolg(self, komu, datum, koliko):
         self._preveri_tip(koliko)
@@ -144,7 +142,7 @@ class Finance:
               "color": "#385965", 
               "width": 1.5
             }, 
-            "mode": "lines", 
+            "mode": "lines+markers", 
             "name": "Stanje", 
             "type": "scatter", 
         }
@@ -155,7 +153,7 @@ class Finance:
               "color": "#f21b1b", 
               "width": 1.5
             }, 
-            "mode": "lines", 
+            "mode": "lines+markers", 
             "name": "Stroški", 
             "type": "scatter", 
         }
@@ -199,7 +197,7 @@ class Finance:
                 'datum': str(v[0]),
                 'koliko': v[1],
             } for k, v in self.posojeno_meni.items()],
-        }#se stanje ce ga nebo avto
+        }
 
     @classmethod
     def nalozi_iz_slovarja(cls, slovar_s_stanjem):
