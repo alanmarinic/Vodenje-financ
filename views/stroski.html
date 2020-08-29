@@ -1,99 +1,125 @@
 % rebase('base.html', izbrani_zavihek='stroski')
 
 <div class="columns is-mobile is-multiline is-centered">
-    <div class="column is-two-fifth">
-      <table class="table is-fullwidth">
-        <div class="tile is-child box">
-          <p class="title">Stroški <i class="fas fa-shopping-cart"></i></p>
-        </div>
-        <thead>
+  <div class="column is-two-fifth">
+    <table class="table is-fullwidth">
+      <div class="tile is-child box panel-heading">
+        <p class="title">Stroški <i class="fas fa-shopping-cart"></i></p>
+      </div>
+      <thead>
+        <tr>
+          <th>Strošek</th>
+          <th>Kategorija</th>
+          <th style="text-align: center" colspan="2">Skupna cena(€)</th>
+          <th>Datum</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <form action="/dodaj-strosek/" method="POST">
           <tr>
-            <th>Strošek</th>
-            <th>Kategorija</th>
-            <th style="text-align: center" colspan="2">Skupna cena(€)</th>
-            <th>Datum</th>
-            <th></th>
+            <td>
+              <input class="input" type="text" name="strosek" placeholder="Ime stroška">
+            </td>
+            <td>
+              <input class="input" type="text" name="kategorija" placeholder="Ime kategorije">
+            </td>
+            <td>
+              <input class="input" type="text" name="cena" placeholder="Cena">
+            </td>
+            <td>
+              <input class="input" type="text" name="kolicina" placeholder="Količina">
+            </td>
+            <td>
+              <input class="input" type="text" name="datum" placeholder="Datum">
+            </td>
+            <td>
+              <div class="control">
+                <button class="button is-success is-small">Dodaj</button>
+              </div>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <form action="/dodaj-strosek/" method="POST">
-            <tr>
-              <td>
-                <input class="input" type="text" name="strosek" placeholder="Ime stroška">
-              </td>
-              <td>
-                <input class="input" type="text" name="kategorija" placeholder="Ime kategorije">
-              </td>
-              <td>
-                <input class="input" type="text" name="cena" placeholder="Cena">
-              </td>
-              <td>
-                <input class="input" type="text" name="kolicina" placeholder="Količina">
-              </td>
-              <td>
-                <input class="input" type="text" name="datum" placeholder="Datum">
-              </td>
-              <td>
-                <div class="control">
-                  <button class="button is-success is-small">Dodaj</button>
-                </div>
-              </td>
-            </tr>
-          </form>
-          % for strosek, atributi in finance.stroski.items():
+        </form>
+        % for strosek, atributi in finance.stroski.items():
+        <tr>
+          <td>{{strosek[0]}}</td>
+          <td>{{strosek[1]}}</td>
+          <td style="text-align: center" colspan="2">{{atributi[0]}}</td>
+          <td>{{atributi[1]}}</td>
+          <td></td>
+        </tr>
+        % end
+      </tbody>
+    </table>
+  </div>
+  <div class="column is-4">
+    <table class="table is-fullwidth">
+      <div class="tile is-child box panel-heading">
+        <p class="title">Dohodki <i class="fas fa-coins"></i></p>
+      </div>
+      <thead>
+        <tr>
+          <th>Dohodek(€)</th>
+          <th>Datum</th>
+          <th>Opis</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <form action="/dodaj-dohodek/" method="POST">
           <tr>
-            <td>{{strosek[0]}}</td>
-            <td>{{strosek[1]}}</td>
-            <td style="text-align: center" colspan="2">{{atributi[0]}}</td>
-            <td>{{atributi[1]}}</td>
+            <td>
+              <input class="input" type="text" name="dohodek" placeholder="Dohodek">
+            </td>
+            <td>
+              <input class="input" type="text" name="datum" placeholder="Datum">
+            </td>
+            <td>
+              <input class="input" type="text" name="opis" placeholder="Opis">
+            </td>
+            <td>
+              <div class="control">
+                <button class="button is-success is-small">Dodaj</button>
+              </div>
+            </td>
+          </tr>
+        </form>
+        % for priliv, opis in finance.prilivi.items():
+          <tr>
+            <td>{{priliv[0]}}</td>
+            <td>{{priliv[1]}}</td>
+            <td>{{opis}}</td>
             <td></td>
           </tr>
-          % end
-        </tbody>
-      </table>
-    </div>
-
-    <div class="column is-4">
-      <table class="table is-fullwidth">
-        <div class="tile is-child box">
-          <p class="title">Dohodki <i class="fas fa-coins"></i></p>
-        </div>
-        <thead>
-          <tr>
-            <th>Dohodek(€)</th>
-            <th>Datum</th>
-            <th>Opis</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <form action="/dodaj-dohodek/" method="POST">
-            <tr>
-              <td>
-                <input class="input" type="text" name="dohodek" placeholder="Dohodek">
-              </td>
-              <td>
-                <input class="input" type="text" name="datum" placeholder="Datum">
-              </td>
-              <td>
-                <input class="input" type="text" name="opis" placeholder="Opis">
-              </td>
-              <td>
-                <div class="control">
-                  <button class="button is-success is-small">Dodaj</button>
-                </div>
-              </td>
-            </tr>
-          </form>
-          % for priliv, opis in finance.prilivi.items():
-            <tr>
-              <td>{{priliv[0]}}</td>
-              <td>{{priliv[1]}}</td>
-              <td>{{opis}}</td>
-              <td></td>
-            </tr>
-          % end
-        </tbody>
-      </table>
-    </div>
+        % end
+      </tbody>
+    </table>
+  </div>
 </div>
+
+
+<!--a delaaa-->
+<div class="columns is-mobile is-multiline">
+  <div class="column is-one-third">
+    <nav class="panel">
+      <p class="title panel-heading tile is-child box">
+        Poraba na kategorijo
+        <i class="fas fa-box-open"></i>
+      </p>
+      <div class="panel">
+        <form action="/poraba-kategorija/" method="POST">
+          <div class="field">
+            <input class="input" type="text" name="kategorija" placeholder="Ime kategorije">
+          </div>
+          <div class="field">
+            <div class="control">
+              <button class="button is-success is-fullwidth">Izračunaj</button>
+            </div>
+          </div>
+          % if poraba_kat:
+          <div style="color: black; padding: 5pt;">{{sporocilo}}</div>
+          % end
+        </form>
+      </div>
+    </nav>
+  </div>

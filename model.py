@@ -1,5 +1,7 @@
 import plotly as py
 import plotly.graph_objs as go
+import json
+
 class Uporabnik:
     def __init__(self, uporabnisko_ime, zasifrirano_geslo, osebne_finance):
         self.uporabnisko_ime = uporabnisko_ime
@@ -53,8 +55,8 @@ class Finance:
         else:
             self.stroski_graf[datum] = vrednost
 
-    def stroski_po_kategorijah(self):               
-        kategorije = {}
+    def stroski_po_kategorijah(self): 
+        kategorije = {}              
         for k,v in self.stroski.items():
             strosek = k[0]
             kategorija = k[1]
@@ -86,12 +88,6 @@ class Finance:
             self.stanje_graf[datum] += priliv
         else:
             self.stanje_graf[datum] = self.stanje
-
-    def spodnja_meja_stanja(self, spodnja_meja=0):
-        if self.stanje <= spodnja_meja:
-            raise ValueError('Presegli ste spodnjo mejo!')
-        else:
-            pass
 
     def posodi(self, komu, datum, koliko):
         self._preveri_tip(koliko)
@@ -173,6 +169,28 @@ class Finance:
         }
         graf = go.Figure(data = podatki, layout = layout)
         graf.show()
+
+    def poraba_na_kategorijo(self, kategorija):
+        kategorije = self.stroski_po_kategorijah()
+        if kategorija not in kategorije:
+            raise ValueError(f'Kategorija {kategorija} ne obstaja!')
+        poraba = 0
+        for strosek in kategorije[kategorija]:
+            ime_stroska = strosek[0]
+            try:
+                poraba+= self.poraba_strosek(ime_stroska, kategorija)
+            except KeyError:
+                poraba += 0
+        return poraba
+
+    def poraba_strosek(self, ime_stroska, kategorija):
+        self._preveri_strosek(ime_stroska, kategorija)
+        poraba = self.stroski[(ime_stroska, kategorija)][0]
+        return poraba
+        
+    def _preveri_strosek(self, strosek, kategorija):
+        if (strosek, kategorija) not in self.stroski:
+            return ValueError('Želejni strošek ne obstaja!')
 
     def slovar_s_stanjem(self):
         return {

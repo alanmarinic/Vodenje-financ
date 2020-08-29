@@ -1,0 +1,139 @@
+% rebase('base.html', izbrani_zavihek='posojila')
+
+<div class="column is-four-fifth">
+  <div class="tile is-child box panel-heading">
+    <h1 class="title" style="text-align:center">Posojila <i class="fas fa-sync-alt"></i></h1>
+  </div>
+</div>
+<br>
+<div class="columns is-mobile is-multiline is-centered">
+  <div class="column is-one-fifth">
+    <nav class="panel">
+      <p class="panel-heading">Vračila meni <i class="fas fa-user-plus"></i></p>
+      <div class="panel-block">
+        <form action="/vrnjeno-meni/" method="POST">
+          <div class="field">
+            % include('_posojila.html', id='odkoga', oznaka='Oseba')
+          </div>
+          <div class="field">
+            <input class="input" type="text" name="koliko" placeholder="Koliko">
+          </div>
+          <div class="field">
+            <input class="input" type="text" name="datum" placeholder="Datum">
+          </div>
+          <div class="control">
+            <button class="button is-success is-fullwidth">Vrni mi denar</button>
+          </div>
+        </form>
+      </div>
+    </nav>
+    <nav class="panel">
+      <p class="panel-heading">Vračila drugim <i class="fas fa-user-minus"></i></p>
+      <div class="panel-block">
+        <form action="/vrnjeno-ostalim/" method="POST">
+          <div class="field">
+            % include('_izposojila.html', id='odkoga', oznaka='Oseba')
+          </div>
+          <div class="field">
+            <input class="input" type="text" name="koliko" placeholder="Koliko">
+          </div>
+          <div class="field">
+            <input class="input" type="text" name="datum" placeholder="Datum">
+          </div>
+          <div class="control">
+            <button class="button is-success is-fullwidth">Vrni prijatelju</button>
+          </div>
+        </form>
+      </div>
+    </nav>
+  </div>
+  <div class="column is-two-fifth">
+    <table class="table is-fullwidth">
+      <div class="title is-child box panel-heading">
+        <p class="subtitle">Posojeno <i class="fas fa-redo-alt"></i></p>
+      </div>
+      <thead>
+        <tr>
+          <th>Komu</th>
+          <th>Datum</th>
+          <th>Koliko(€)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <form action="/posodi-denar/" method="POST">
+          <tr>
+            <td>
+              <input class="input" type="text" name="komu">
+            </td>
+            <td>
+              <input class="input" type="text" name="datum">
+            </td>
+            <td>
+              <input class="input" type="text" name="koliko">
+            </td>
+            <td>
+              <div class="control">
+                <button class="button is-success is-small">Posodi</button>
+              </div>
+            </td>
+          </tr>
+        </form>
+        % for odkoga, ostalo in finance.posojeno_drugim.items():
+          <tr>
+            <td>{{odkoga}}</td>
+            <td>{{ostalo[0]}}</td>
+            <td>{{ostalo[1]}}</td>
+            <td></td>
+          </tr>
+        % end
+      </tbody>
+    </table>
+  <!-- ce dodas</dir da eno zrvn druge-->
+  <br>
+  <br>
+  <br>
+  <div class="column is-two-fifth">
+    <table class="table is-fullwidth">
+      <div class="title is-child box panel-heading">
+        <p class="subtitle">Izposojeno <i class="fas fa-undo-alt"></i></p>
+      </div>
+      <thead>
+        <tr>
+          <th>Odkoga</th>
+          <th>Datum</th>
+          <th>Koliko(€)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <form action="/izposodi-denar/" method="POST">
+          <tr>
+            <td>
+              <input class="input" type="text" name="odkoga">
+            </td>
+            <td>
+              <input class="input" type="text" name="datum">
+            </td>
+            <td>
+              <input class="input" type="text" name="koliko">
+            </td>
+            <td>
+              <div class="control">
+                <button class="button is-success is-small">Izposodi si</button>
+              </div>
+            </td>
+          </tr>
+        </form>
+        % for odkoga, ostalo in finance.posojeno_meni.items():
+          <tr>
+            <td>{{odkoga}}</td>
+            <td>{{ostalo[0]}}</td>
+            <td>{{ostalo[1]}}</td>
+            <td></td>
+          </tr>
+        % end
+      </tbody>
+    </table>
+  </div>    
+</div>
