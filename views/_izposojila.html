@@ -1,17 +1,17 @@
 <div class="control has-icons-left">
-    <div class="select is-fullwidth">
-      <select name="{{id}}" id="{{id}}">
-        % if defined('oznaka'):
-        <option disabled selected>{{oznaka}}</option>
-        % end
-        % for odkoga in finance.posojeno_meni.keys():
-          <option value="{{odkoga}}">
-            {{odkoga}}
-          </option>
-        % end
-      </select>
-    </div>
-    <span class="icon is-small is-left">
-      <i class="fas fa-users"></i>
-    </span>
+  <div class="select is-fullwidth">
+    <select name="{{id}}" id="{{id}}">
+      % if defined('oznaka'):
+      <option disabled selected>{{oznaka}}</option>
+      % end
+      % for odkoga in finance.posojeno_meni.keys():
+        <option value="{{odkoga}}">
+          {{odkoga}}
+        </option>
+      % end
+    </select>
+  </div>
+  <span class="icon is-small is-left">
+    <i class="fas fa-users"></i>
+  </span>
 </div>

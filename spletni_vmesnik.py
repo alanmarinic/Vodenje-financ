@@ -111,7 +111,8 @@ def poraba_kategorija():
     kategorija = bottle.request.forms.getunicode("kategorija")
     poraba_kat = True
     kategorija_st = finance.poraba_na_kategorijo(kategorija)
-    sporocilo = "V kategoriji {} ste porabili {} €".format(kategorija, str(round(kategorija_st, 2)))
+    sporocilo = f"V kategoriji {kategorija} ste porabili {str(round(kategorija_st, 2))} €"
+    shrani_trenutnega_uporabnika()
     bottle.redirect('/stroski/')
 
 @bottle.post('/posodi-denar/')
