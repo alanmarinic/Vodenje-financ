@@ -44,7 +44,11 @@ class Finance:
         if type(kolicina) != int:
             raise TypeError('Količina mora biti celo število!')
         skupna_cena = round(kolicina * cena, 2)
-        self.stroski[(strosek, kategorija)] = [skupna_cena, datum]
+        if (strosek, kategorija) in self.stroski:
+            stara_cena = self.stroski[(strosek, kategorija)][0]
+            self.stroski[(strosek, kategorija)][0] = stara_cena + skupna_cena
+        else:
+            self.stroski[(strosek, kategorija)] = [skupna_cena, datum]
         self.stanje -= skupna_cena
         self._stroski_graf(datum, skupna_cena)
         self._stanje_graf(datum, self.stanje)
@@ -156,7 +160,7 @@ class Finance:
         podatki = [sled_stanja, sled_porabe]
         layout = {
             "showlegend": True, 
-            "title": {"text": "Analiza evidence"}, 
+            "title": {"text": "Analiza stanja in porabe"}, 
             "xaxis": {
                 "rangeslider": {"visible": False}, 
                 "title": {"text": "Čas"}, 
