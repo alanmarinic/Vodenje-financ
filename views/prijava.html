@@ -1,0 +1,48 @@
+% rebase('base.html')
+
+<div class="tile is-ancestor">
+    <div class="tile is-parent">
+        <article class="tile is-child box is-info">
+            <p class="title">Finance</p>
+            <p>Finance je program namenjen vodenju vaših osebnih financ.</p>
+            <p>Če želite vstopiti v pogled vaših financ se prijavite.</p>
+            <p>Če še nimate računa se registrirajte.</p>
+        </article>
+    </div>
+    <div class="tile is-parent is-vertical">
+        <article class="tile is-child box">
+            <form method="POST">
+              <p class="title">Prijava</p>
+              <div class="field">
+                <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+                <input class="input" type="text" placeholder="Uporabniško ime" name="uporabnisko_ime" required>
+              </div>
+              <div class="field">
+                <span class="icon is-small is-left"><i class="fas fa-unlock-alt"></i></span>
+                <input class="input" type="password" placeholder="Geslo" name="geslo" required>
+              </div>
+          
+              <div class="control">
+                <input class="button is-dark" type="submit" value="Prijavite se">
+              </div>
+            </form>
+        </article>
+        <article class="tile is-child box">
+            <form method="POST">
+              <p class="title">Registracija</p>
+              <input type="hidden" name="nove_finance">
+              <div class="field">
+                <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+                <input class="input" type="text" placeholder="Uporabniško ime" name="uporabnisko_ime" required>
+              </div>
+              <div class="field">
+                <span class="icon is-small is-left"><i class="fas fa-unlock-alt"></i></span>
+                <input class="input" type="password" placeholder="Geslo" name="geslo" required>
+              </div>            
+              <div class="control">
+                <input class="button is-dark" type="submit" value="Registrirajte se">
+              </div>
+            </form>   
+        </article>
+    </div>
+</div>
