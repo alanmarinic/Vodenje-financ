@@ -1,0 +1,52 @@
+{
+    "uporabnisko_ime": "avto",
+    "zasifrirano_geslo": "da77bd2a1d857d88b31de27536b81df7f005027d4f847667df13a0569b6048e0454ce9480827789547cc174060c4f388866ebb0209929b0de414cc9ac571c421",
+    "osebne_finance": {
+        "stroski": [
+            {
+                "strosek": "žoga",
+                "kategorija": "šport",
+                "skupna cena": 20.0,
+                "datum": "2000.3.10"
+            },
+            {
+                "strosek": "majica",
+                "kategorija": "obleke",
+                "skupna cena": 30.0,
+                "datum": "2000.4.8"
+            },
+            {
+                "strosek": "prstan",
+                "kategorija": "nakit",
+                "skupna cena": 400.0,
+                "datum": "2000.8.29"
+            }
+        ],
+        "prilivi": [
+            {
+                "priliv": 1000.0,
+                "datum": "2000.3.1",
+                "opis": "nakazilo"
+            },
+            {
+                "priliv": 69.0,
+                "datum": "2000.5.15",
+                "opis": "rojstni dan"
+            }
+        ],
+        "posojeno drugim": [
+            {
+                "komu": "Ajna",
+                "datum": "2000.5.25",
+                "koliko": 76.0
+            }
+        ],
+        "posojeno meni": [
+            {
+                "komu": "mami",
+                "datum": "2000.10.1",
+                "koliko": 178.0
+            }
+        ]
+    }
+}
