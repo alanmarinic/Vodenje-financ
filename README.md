@@ -2,13 +2,13 @@
 ## Projektna naloga UVP
 Program je namenjen evidenci in analizi stroškov.
 ## Pred uporabo
-Za uporabo potrebujete knjižnici 'plotly' in 'plotly.graph_objs', obe lahko naložite z ukazom:
-'''
+Za uporabo potrebujete knjižnici `plotly` in `plotly.graph_objs`, obe lahko naložite z ukazom:
+```
 pip3 install plotly
-'''
+```
 
 ## Uporaba
-Strežnik se nahaja v datoteki spletni_vmesnik.py, zaženemo pa ga lahko z ukazom python3 -i spletni_vmesnik.py.
+Strežnik se nahaja v datoteki `spletni_vmesnik.py`, zaženemo pa ga lahko z ukazom `python3 -i spletni_vmesnik.py`.
 ### Več uporabnikov
 Program omogoča uporabo večim uporabnikom, hkrati pa si shrani vaše stanje, tako da lahko do svojih podaatkov dostopate z uporabniškim imenom in geslom.
 ### Funkcionalnost
